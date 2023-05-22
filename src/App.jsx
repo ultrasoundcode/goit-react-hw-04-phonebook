@@ -6,13 +6,14 @@ import styles from './App.module.css';
 import { LOCALSTORAGE_KEY } from 'components/constants';
 
 export default function App() {
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)) || []
-  );
+  const [contacts, setContacts] = useState(() => {
+    console.log('object');
+    return JSON.parse(window.localStorage.getItem(LOCALSTORAGE_KEY)) ?? [];
+  });
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(contacts));
+    window.localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(contacts));
   }, [contacts]);
 
   const addContact = newContact => {
@@ -24,6 +25,10 @@ export default function App() {
       return alert(`${newContact.name} is already in contacts.`);
     }
     setContacts([...contacts, newContact]);
+  };
+
+  const deleteContact = ({ id }) => {
+    setContacts(prev => prev.filter(contact => contact.id !== id));
   };
 
   const changeFilter = event => {
@@ -39,9 +44,6 @@ export default function App() {
   };
 
   const visibleContacts = getVisibleContacts();
-  const deleteContact = ({ id }) => {
-    setContacts(prev => prev.filter(contact => contact.id !== id));
-  };
 
   return (
     <div className={styles.phonebook}>
