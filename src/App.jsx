@@ -5,11 +5,12 @@ import FilterContact from 'components/FilterContact/FilterContact';
 import styles from './App.module.css';
 import { LOCALSTORAGE_KEY } from 'components/constants';
 
+function useLocalStorage() {
+  return JSON.parse(window.localStorage.getItem(LOCALSTORAGE_KEY)) ?? [];
+}
+
 export default function App() {
-  const [contacts, setContacts] = useState(() => {
-    console.log('object');
-    return JSON.parse(window.localStorage.getItem(LOCALSTORAGE_KEY)) ?? [];
-  });
+  const [contacts, setContacts] = useState(useLocalStorage);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
