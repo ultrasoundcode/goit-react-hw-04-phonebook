@@ -6,7 +6,9 @@ import styles from './App.module.css';
 import { LOCALSTORAGE_KEY } from 'components/constants';
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)) || []
+  );
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
