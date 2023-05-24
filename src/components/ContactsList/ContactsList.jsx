@@ -6,9 +6,11 @@ function ContactsList({ contacts, onDeleteContact }) {
     <ul>
       {contacts.map(contact => {
         return (
-          <li key={contact.id}>
-            <Contact contact={contact} onDeleteContact={onDeleteContact} />
-          </li>
+          <Contact
+            key={contact.id}
+            contact={contact}
+            onDeleteContact={onDeleteContact}
+          />
         );
       })}
     </ul>

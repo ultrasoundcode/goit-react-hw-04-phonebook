@@ -5,12 +5,10 @@ import FilterContact from 'components/FilterContact/FilterContact';
 import styles from './App.module.css';
 import { LOCALSTORAGE_KEY } from 'components/constants';
 
-function useLocalStorage() {
-  return JSON.parse(window.localStorage.getItem(LOCALSTORAGE_KEY)) ?? [];
-}
-
 export default function App() {
-  const [contacts, setContacts] = useState(useLocalStorage);
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(window.localStorage.getItem(LOCALSTORAGE_KEY)) ?? [];
+  });
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export default function App() {
     if (findName) {
       return alert(`${newContact.name} is already in contacts.`);
     }
-    setContacts([...contacts, newContact]);
+    setContacts(prev => [...contacts, newContact]);
   };
 
   const deleteContact = ({ id }) => {
@@ -38,10 +36,9 @@ export default function App() {
 
   const getVisibleContacts = () => {
     const normalizedFilter = filter.toLowerCase();
-    const visibleContacts = contacts.filter(contact =>
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
-    return visibleContacts;
   };
 
   const visibleContacts = getVisibleContacts();
